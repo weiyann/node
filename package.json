@@ -5,6 +5,9 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
+    "dev": "nodemon index.js",
+    "production": "pm2 start index.js",
+    "start": "echo 123",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
