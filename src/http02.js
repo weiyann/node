@@ -1,5 +1,5 @@
 import http from "node:http";
-import fs from "node:fs/promises";
+import fs from "node:fs/promises"; //它提供了Promise-based的檔案系統操作
 
 const server = http.createServer(async (req, res) => {
   const jsonStr = JSON.stringify(req.headers, null, 4);
