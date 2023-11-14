@@ -14,8 +14,8 @@ app.get('/', (req, res) => {
 
 // 設定靜態內容的資料夾 // public裡面的內容相當於在根目錄
 app.use(express.static("public"));
-app.use(express.static("node_modules/bootstrap/dist"));
-app.use(express.static("node_modules/jquery/dist"));
+app.use("/bootstrap", express.static("node_modules/bootstrap/dist")); // 靜態資料夾在bootstrap底下
+app.use("/jquery", express.static("node_modules/jquery/dist"));
 
 // 404 // 要放在別的路由後面 // .use是所有的方法
 app.use((req, res) => {
