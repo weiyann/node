@@ -3,9 +3,12 @@ import express from "express";
 
 const app = express();
 
+// 設定樣版引擎
+app.set('view engine', 'ejs');
+
 // 定義路由,允許get方法拜訪
 app.get('/', (req, res) => {
-  res.send('<h2>abc</h2>');
+  res.render('home', { name: "yann" }); // 指定home樣版的檔案 // 傳遞name參數給樣版
 });
 
 // app.get("/a.html", (req, res) => {
@@ -13,8 +16,9 @@ app.get('/', (req, res) => {
 // });
 
 // 設定靜態內容的資料夾 // public裡面的內容相當於在根目錄
-app.use(express.static("public"));
-app.use("/bootstrap", express.static("node_modules/bootstrap/dist")); // 靜態資料夾在bootstrap底下
+app.use(express.static("public"));  // app.use("/",express.static("public"));
+// 靜態內容的資料夾對應到 /bootstrap底下
+app.use("/bootstrap", express.static("node_modules/bootstrap/dist"));
 app.use("/jquery", express.static("node_modules/jquery/dist"));
 
 // 404 // 要放在別的路由後面 // .use是所有的方法
