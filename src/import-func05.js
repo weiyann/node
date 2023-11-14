@@ -3,4 +3,4 @@ import { f4 } from "./func04.js"
 
 console.log(f5(5));
 console.log(f4(4));
-
+console.log(f4.myFunc(6))
