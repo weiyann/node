@@ -12,7 +12,7 @@ app.get('/', (req, res) => {
 //   res.send(`假的 a.html`);
 // });
 
-// 設定靜態內容的資料夾
+// 設定靜態內容的資料夾 // public裡面的內容相當於在根目錄
 app.use(express.static("public"));
 
 // 404 // 要放在別的路由後面 // .use是所有的方法
