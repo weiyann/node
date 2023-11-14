@@ -1,5 +1,6 @@
 import "dotenv/config";
 import express from "express";
+import sales from "./data/sales.json" assert { type: "json" };
 
 const app = express();
 
@@ -9,6 +10,10 @@ app.set('view engine', 'ejs');
 // 定義路由,允許get方法拜訪
 app.get('/', (req, res) => {
   res.render('home', { name: "yann" }); // 指定home樣版的檔案 // 傳遞name參數給樣版
+});
+
+app.get('/json-sales', (req, res) => {
+  res.json(sales);
 });
 
 // app.get("/a.html", (req, res) => {
