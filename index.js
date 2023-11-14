@@ -13,7 +13,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/json-sales', (req, res) => {
-  res.json(sales);
+  res.render('json-sales', { sales });
 });
 
 // app.get("/a.html", (req, res) => {
