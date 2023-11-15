@@ -1,7 +1,7 @@
 import multer from "multer";
-import { v4 as uuidv4 } from "uuid";
+import { v4 as uuidv4 } from "uuid"; 
 
-
+// 篩選檔案和決定副檔名
 const extMap = {
   'image/jpeg': '.jpg',
   'image/png': '.png',

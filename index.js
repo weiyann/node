@@ -46,6 +46,15 @@ app.post('/try-upload', upload.single("avatar"),(req, res) => {
   res.json(req.file)
 });
 
+app.post('/try-uploads', upload.array("photos"),(req, res) => {
+  res.json(req.files)
+});
+
+// 用變數設定路由
+app.get('/my-params1/:action?/:id?', (req, res) => {
+  res.json(req.params)
+});
+
 // app.get("/a.html", (req, res) => {
 //   res.send(`假的 a.html`);
 // });
