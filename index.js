@@ -3,7 +3,9 @@ import express from "express";
 import sales from "./data/sales.json" assert { type: "json" }; // import json檔目前是實驗性質的功能
 //import multer from "multer";
 //const upload = multer({dest:'tmp_uploads/'})
-import upload from "./utils/upload-imgs.js"
+import upload from "./utils/upload-imgs.js";
+
+import admin2Router from './routes/admin2.js';
 
 const app = express();
 
@@ -54,6 +56,7 @@ app.get('/my-params1/hello', (req, res) => {
   res.json({hello:"yann"})
 });
 
+
 // 用變數設定路由 // 寬鬆的放後面
 app.get('/my-params1/:action?/:id?', (req, res) => {
   res.json(req.params)
@@ -62,9 +65,10 @@ app.get('/my-params1/:action?/:id?', (req, res) => {
 app.get(/^\/m\/09\d{2}-?\d{3}-?\d{3}$/i, (req, res) => {
   let u = req.url.slice(3).split('?')[0];
   u = u.split('-').join('');
-  res.json({u});
+  res.send({u});
 });
 
+app.use(admin2Router);
 
 
 // app.get("/a.html", (req, res) => {
