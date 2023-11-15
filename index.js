@@ -1,9 +1,10 @@
 import "dotenv/config";
 import express from "express";
 import sales from "./data/sales.json" assert { type: "json" }; // import json檔目前是實驗性質的功能
-import multer from "multer";
+//import multer from "multer";
+//const upload = multer({dest:'tmp_uploads/'})
+import upload from "./utils/upload-imgs.js"
 
-const upload = multer({dest:'tmp_uploads/'})
 const app = express();
 
 // 設定樣版引擎
