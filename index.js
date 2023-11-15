@@ -18,17 +18,19 @@ app.use(express.json());
 
 // 自訂頂層 middleware
 app.use((req,res,next)=>{
-  res.locals.title="Yann 的網站"
+  res.locals.title="Yann 的網站"; // 將title設定為樣版屬性
 
-  next()
+  next() //req,res 往下傳遞
 })
 
 // 定義路由,允許get方法拜訪
 app.get('/', (req, res) => {
+  res.locals.title = '首頁｜'+res.locals.title
   res.render('home', { name: process.env.DB_NAME }); // 指定home樣版的檔案 // 傳遞name參數給樣版
 });
 
 app.get('/json-sales', (req, res) => {
+  res.locals.title = "JSON資料 | " + res.locals.title;
   res.render('json-sales', { sales });
 });
 
