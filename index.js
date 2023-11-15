@@ -1,11 +1,15 @@
 import "dotenv/config";
 import express from "express";
-import sales from "./data/sales.json" assert { type: "json" };
+import sales from "./data/sales.json" assert { type: "json" }; // import json檔目前是實驗性質的功能
 
 const app = express();
 
 // 設定樣版引擎
 app.set('view engine', 'ejs');
+
+// top-level middlewares // 依檔頭Content-Type來決定是否解析
+app.use(express.urlencoded({extended:false}))
+app.use(express.json())
 
 // 定義路由,允許get方法拜訪
 app.get('/', (req, res) => {
@@ -14,6 +18,16 @@ app.get('/', (req, res) => {
 
 app.get('/json-sales', (req, res) => {
   res.render('json-sales', { sales });
+});
+
+app.get('/try-qs', (req, res) => {
+  res.json(req.query);
+});
+
+
+app.post('/try-post', (req, res) => {
+  console.log("req.body:",req.body);
+  res.json(req.body);
 });
 
 // app.get("/a.html", (req, res) => {
