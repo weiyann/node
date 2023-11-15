@@ -1,9 +1,11 @@
 //import "dotenv/config";
 import express from "express";
+import session from "express-session";
 import sales from "./data/sales.json" assert { type: "json" }; // import json檔目前是實驗性質的功能
 //import multer from "multer";
 //const upload = multer({dest:'tmp_uploads/'})
 import upload from "./utils/upload-imgs.js";
+
 
 import admin2Router from './routes/admin2.js';
 
@@ -13,19 +15,28 @@ const app = express();
 app.set('view engine', 'ejs');
 
 // top-level middlewares // 依檔頭Content-Type來決定是否解析
-app.use(express.urlencoded({extended:false}))
+app.use(express.urlencoded({ extended: false }))
 app.use(express.json());
+app.use(
+  session({
+    saveUninitialized: false, // 新用戶沒有使用到 session 物件時不會建立 session 和發送 cookie
+    resave: false,  // 沒變更內容是否強制回存
+    secret: 'feagfegwevgv213',
+    // cookie: {
+    // maxAge: 1200_000, // 20分鐘，單位毫秒
+    // },
+  }))
 
-// 自訂頂層 middleware
-app.use((req,res,next)=>{
-  res.locals.title="Yann 的網站"; // 將title設定為樣版屬性
+// 自訂頂層 middleware // 放後面
+app.use((req, res, next) => {
+  res.locals.title = "Yann 的網站"; // 將title設定為樣版屬性
 
   next() //req,res 往下傳遞
 })
 
 // 定義路由,允許get方法拜訪
 app.get('/', (req, res) => {
-  res.locals.title = '首頁｜'+res.locals.title
+  res.locals.title = '首頁｜' + res.locals.title
   res.render('home', { name: process.env.DB_NAME }); // 指定home樣版的檔案 // 傳遞name參數給樣版
 });
 
@@ -40,7 +51,7 @@ app.get('/try-qs', (req, res) => {
 
 
 app.post('/try-post', (req, res) => {
-  console.log("req.body:",req.body);
+  console.log("req.body:", req.body);
   res.json(req.body);
 });
 
@@ -49,20 +60,20 @@ app.get('/try-post-form', (req, res) => {
 });
 
 app.post('/try-post-form', (req, res) => {
-  res.render('try-post-form',req.body);
+  res.render('try-post-form', req.body);
 });
 
 // 加入 middleware upload.single()
-app.post('/try-upload', upload.single("avatar"),(req, res) => {
+app.post('/try-upload', upload.single("avatar"), (req, res) => {
   res.json(req.file)
 });
 
-app.post('/try-uploads', upload.array("photos"),(req, res) => {
+app.post('/try-uploads', upload.array("photos"), (req, res) => {
   res.json(req.files)
 });
 
 app.get('/my-params1/hello', (req, res) => {
-  res.json({hello:"yann"})
+  res.json({ hello: "yann" })
 });
 
 
@@ -74,10 +85,16 @@ app.get('/my-params1/:action?/:id?', (req, res) => {
 app.get(/^\/m\/09\d{2}-?\d{3}-?\d{3}$/i, (req, res) => {
   let u = req.url.slice(3).split('?')[0];
   u = u.split('-').join('');
-  res.send({u});
+  res.send({ u });
 });
 
-app.use('/admins',admin2Router); // 當成 middleware 使用
+app.use('/admins', admin2Router); // 當成 middleware 使用
+
+app.get('/try-sess', (req, res) => {
+  req.session.n = req.session.n || 0;
+  req.session.n++;
+  res.json(req.session);
+});
 
 
 // app.get("/a.html", (req, res) => {

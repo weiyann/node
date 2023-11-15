@@ -15,5 +15,5 @@ req.body     # 表單資料
 req.file     # 上傳單一檔案
 req.files    # 上傳多個檔案
 req.params   # 路徑變數
-
+req.session  # session 物件
 ========================
