@@ -1,6 +1,8 @@
 //import "dotenv/config";
 import express from "express";
 import session from "express-session";
+import dayjs from "dayjs";
+import moment from "moment-timezone";
 import sales from "./data/sales.json" assert { type: "json" }; // import json檔目前是實驗性質的功能
 //import multer from "multer";
 //const upload = multer({dest:'tmp_uploads/'})
@@ -94,6 +96,28 @@ app.get('/try-sess', (req, res) => {
   req.session.n = req.session.n || 0;
   req.session.n++;
   res.json(req.session);
+});
+
+app.get('/try-moment', (req, res) => {
+  const fm = "YYYY-MM-DD HH:mm:ss";
+  const m1 = moment();
+  const m2 = moment("12-10-11");
+  const m3 = moment("12-10-11","DD-MM-YY")
+  const d1 = dayjs();
+  const d2 = dayjs("2023-11-15");
+  const a1 = new Date();
+  const a2 = new Date("2023-11-15")
+
+  res.json({
+    m1:m1.format(fm),
+    m2:m2.format(fm),
+    m3:m3.format(fm),
+    m1a:m1.tz("Europe/London").format(fm),
+    d1:d1.format(fm),
+    d2:d2.format(fm),
+    a1,
+    a2
+  })
 });
 
 
