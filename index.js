@@ -1,4 +1,4 @@
-import "dotenv/config";
+//import "dotenv/config";
 import express from "express";
 import sales from "./data/sales.json" assert { type: "json" }; // import json檔目前是實驗性質的功能
 //import multer from "multer";
@@ -16,7 +16,7 @@ app.use(express.json())
 
 // 定義路由,允許get方法拜訪
 app.get('/', (req, res) => {
-  res.render('home', { name: "yann" }); // 指定home樣版的檔案 // 傳遞name參數給樣版
+  res.render('home', { name: process.env.DB_NAME }); // 指定home樣版的檔案 // 傳遞name參數給樣版
 });
 
 app.get('/json-sales', (req, res) => {
