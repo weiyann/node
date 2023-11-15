@@ -50,10 +50,22 @@ app.post('/try-uploads', upload.array("photos"),(req, res) => {
   res.json(req.files)
 });
 
-// 用變數設定路由
+app.get('/my-params1/hello', (req, res) => {
+  res.json({hello:"yann"})
+});
+
+// 用變數設定路由 // 寬鬆的放後面
 app.get('/my-params1/:action?/:id?', (req, res) => {
   res.json(req.params)
 });
+
+app.get(/^\/m\/09\d{2}-?\d{3}-?\d{3}$/i, (req, res) => {
+  let u = req.url.slice(3).split('?')[0];
+  u = u.split('-').join('');
+  res.json({u});
+});
+
+
 
 // app.get("/a.html", (req, res) => {
 //   res.send(`假的 a.html`);
