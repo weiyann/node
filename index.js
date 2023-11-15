@@ -14,7 +14,14 @@ app.set('view engine', 'ejs');
 
 // top-level middlewares // 依檔頭Content-Type來決定是否解析
 app.use(express.urlencoded({extended:false}))
-app.use(express.json())
+app.use(express.json());
+
+// 自訂頂層 middleware
+app.use((req,res,next)=>{
+  res.locals.title="Yann 的網站"
+
+  next()
+})
 
 // 定義路由,允許get方法拜訪
 app.get('/', (req, res) => {
@@ -68,7 +75,7 @@ app.get(/^\/m\/09\d{2}-?\d{3}-?\d{3}$/i, (req, res) => {
   res.send({u});
 });
 
-app.use(admin2Router);
+app.use('/admins',admin2Router); // 當成 middleware 使用
 
 
 // app.get("/a.html", (req, res) => {
