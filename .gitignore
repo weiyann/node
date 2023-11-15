@@ -7,6 +7,9 @@
 node_modules/
 dist/
 
+tmp_uploads
+public/img
+
 .idea
 .vscode
 headers.txt

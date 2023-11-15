@@ -1,7 +1,9 @@
 import "dotenv/config";
 import express from "express";
 import sales from "./data/sales.json" assert { type: "json" }; // import json檔目前是實驗性質的功能
+import multer from "multer";
 
+const upload = multer({dest:'tmp_uploads/'})
 const app = express();
 
 // 設定樣版引擎
@@ -36,6 +38,10 @@ app.get('/try-post-form', (req, res) => {
 
 app.post('/try-post-form', (req, res) => {
   res.render('try-post-form',req.body);
+});
+
+app.post('/try-upload', upload.single("avatar"),(req, res) => {
+  res.json(req.file)
 });
 
 // app.get("/a.html", (req, res) => {
