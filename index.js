@@ -30,6 +30,14 @@ app.post('/try-post', (req, res) => {
   res.json(req.body);
 });
 
+app.get('/try-post-form', (req, res) => {
+  res.render('try-post-form')
+});
+
+app.post('/try-post-form', (req, res) => {
+  res.json(req.body);
+});
+
 // app.get("/a.html", (req, res) => {
 //   res.send(`假的 a.html`);
 // });
