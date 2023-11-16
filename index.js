@@ -11,6 +11,7 @@ import db from './utils/connect-mysql.js';
 
 
 import admin2Router from './routes/admin2.js';
+import addressBookRouter from './routes/address-book.js';
 
 const app = express();
 
@@ -92,6 +93,7 @@ app.get(/^\/m\/09\d{2}-?\d{3}-?\d{3}$/i, (req, res) => {
 });
 
 app.use('/admins', admin2Router); // 當成 middleware 使用
+app.use('/address-book', addressBookRouter); 
 
 app.get('/try-sess', (req, res) => {
   req.session.n = req.session.n || 0;
