@@ -7,7 +7,7 @@ router.get('/admin2/:p1?/:p2?',(req,res)=>{
     url,
     baseUrl,
     originalUrl,
-    params:{p1,p2},
+    params:{p1,p2}, // 使用解構賦值取得路由參數
   }=req;
 
   res.json({

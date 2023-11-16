@@ -7,6 +7,7 @@ import sales from "./data/sales.json" assert { type: "json" }; // import json檔
 //import multer from "multer";
 //const upload = multer({dest:'tmp_uploads/'})
 import upload from "./utils/upload-imgs.js";
+import db from './utils/connect-mysql.js';
 
 
 import admin2Router from './routes/admin2.js';
@@ -120,6 +121,11 @@ app.get('/try-moment', (req, res) => {
   })
 });
 
+app.get("/try-db",async (req,res)=>{
+  const [results,fields] = await db.query("SELECT * FROM `categories` WHERE 1");
+  res.json({results,fields});
+
+})
 
 // app.get("/a.html", (req, res) => {
 //   res.send(`假的 a.html`);
