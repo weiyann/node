@@ -23,12 +23,18 @@ router.get('/', async (req, res) => {
     if (page > totalPages) {
       return res.redirect(`?page=${totalPages}`)
     }
+
+    const sql = `SELECT * FROM address_book order by sid desc
+    LIMIT ${(page-1)*perPage},${perPage}`;
+    [rows] = await db.query(sql);
+
   }
 
   res.json({
     page,
     totalRows,
-    totalPages
+    totalPages,
+    rows
   });
 
   // const sql = "SELECT * FROM address_book ORDER BY sid DESC LIMIT 5";
