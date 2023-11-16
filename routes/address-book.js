@@ -11,13 +11,25 @@ router.get('/', async (req, res) => {
   let totalPages;
   let rows = [];
 
+  if (page < 1) {
+    //return res.redirect(req.baseUrl)
+    return res.redirect(`?page=1`)
+  }
+
   const t_sql = "select count(1) totalRows from address_book";
   [[{ totalRows }]] = await db.query(t_sql);
   totalPages = Math.ceil(totalRows / perPage);
+  if (totalRows > 0) {
+    if (page > totalPages) {
+      return res.redirect(`?page=${totalPages}`)
+    }
+  }
+
   res.json({
     page,
     totalRows,
-    totalPages});
+    totalPages
+  });
 
   // const sql = "SELECT * FROM address_book ORDER BY sid DESC LIMIT 5";
   // const [rows] = await db.query(sql);

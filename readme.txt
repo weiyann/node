@@ -6,6 +6,7 @@ res.end()
 res.send()
 res.json()
 res.render()
+res.redirect() 轉向
 ------------------------
 ========================
 req 接收的資料
