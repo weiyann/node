@@ -30,7 +30,7 @@ router.get('/', async (req, res) => {
 
   }
 
-  res.json({
+  res.render('address-book/list',{
     page,
     totalRows,
     totalPages,
