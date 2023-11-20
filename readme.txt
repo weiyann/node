@@ -27,3 +27,9 @@ POST:   /products       create, 新增資料
 PUT:    /products/12    update, 修改資料
 DELETE: /products/12    delete, 刪除資料
 ========================
+same origin  # 3個要一樣才是相同的來源
+------------------------
+1. protocol 協定
+2. domain 網域 (IP)
+3. port 通訊埠
+========================

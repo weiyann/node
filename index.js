@@ -1,6 +1,7 @@
 //import "dotenv/config";
 import express from "express";
 import session from "express-session";
+import cors from "cors";
 import dayjs from "dayjs";
 import moment from "moment-timezone";
 import sales from "./data/sales.json" assert { type: "json" }; // import json檔目前是實驗性質的功能
@@ -19,7 +20,8 @@ const app = express();
 app.set('view engine', 'ejs');
 
 // top-level middlewares // 依檔頭Content-Type來決定是否解析
-app.use(express.urlencoded({ extended: false }))
+app.use(cors()); // 放所有路由的前面
+app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(
   session({
