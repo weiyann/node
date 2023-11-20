@@ -18,3 +18,10 @@ req.files    # 上傳多個檔案
 req.params   # 路徑變數
 req.session  # session 物件
 ========================
+RESTful API
+------------------------
+GET:    read
+POST:   create
+PUT:    update
+DELETE: delete
+========================

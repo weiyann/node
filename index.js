@@ -74,7 +74,8 @@ app.post('/try-post-form', (req, res) => {
 
 // 加入 middleware upload.single()
 app.post('/try-upload', upload.single("avatar"), (req, res) => {
-  res.json(req.file)
+  //res.json(req.file);
+  res.render('try-upload');
 });
 
 app.post('/try-uploads', upload.array("photos"), (req, res) => {
