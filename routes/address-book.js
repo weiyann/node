@@ -21,9 +21,10 @@ const getListData = async (req) => {
     totalPages,
 
     redirect: "",
-    info: ""
+    info: "",
   }
 
+  // 如果頁碼小於1,導向第一頁
   if (page < 1) {
     output.redirect = `?page=1`;
     output.info = `頁碼值小於1`
@@ -37,7 +38,7 @@ const getListData = async (req) => {
     if (page > totalPages) {
       output.redirect = `?page=${totalPages}`;
       output.info = `頁碼值大於總頁數`;
-      // 展開運算符 { ...output } 的作用是創建一個新的物件，將 output 物件中的所有屬性複製到這個新的物件中。同時，你可以在展開的同時添加其他屬性
+      // 展開運算符 { ...output } 做淺層複製，將 output 物件中的所有屬性複製到這個新的物件中。同時，你可以在展開的同時添加其他屬性
       // 將 totalRows 和totalPages 最新的值放在output中
       return { ...output, totalRows, totalPages };
     }
@@ -56,11 +57,13 @@ const getListData = async (req) => {
 // 網頁呈現資料
 router.get('/', async (req, res) => {
   res.locals.pageName='ab-list';
+  // 將 getListData 裡 output 的值返回給外面的 output
   const output = await getListData(req);
   if (output.redirect) {
-    // 如果有重定向屬性，執行重定向
+    // 如果有redirect屬性，執行轉向 // 加return結束，不用再執行下面的render
     return res.redirect(output.redirect);
   }
+  // 沒轉向就一般呈現list
   res.render('address-book/list', output)
 })
 
