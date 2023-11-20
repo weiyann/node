@@ -54,7 +54,7 @@ const getListData = async (req) => {
 
 // 網頁呈現資料
 router.get('/', async (req, res) => {
-  res.locals.pageName='ab-list'
+  res.locals.pageName='ab-list';
   const output = await getListData(req);
   if (output.redirect) {
     // 如果有重定向屬性，執行重定向
@@ -66,6 +66,10 @@ router.get('/', async (req, res) => {
 // api 呈現資料
 router.get('/api', async (req, res) => {
   res.json(await getListData(req))
+})
+router.get('/add', async (req, res) => {
+  res.locals.pageName='ab-add'
+  res.render('address-book/add')
 })
 
 export default router;

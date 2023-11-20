@@ -136,6 +136,12 @@ app.get("/try-db",async (req,res)=>{
   const [results,fields] = await db.query("SELECT * FROM `categories` WHERE 1");
   res.json({results,fields});
 
+});
+app.get("/yahoo",async (req,res)=>{
+  const r = await fetch("https://tw.yahoo.com/"); // 後端 fetch 沒有cors問題
+  const txt =await r.text();
+  res.send(txt);
+
 })
 
 // app.get("/a.html", (req, res) => {
