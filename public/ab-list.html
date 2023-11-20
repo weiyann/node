@@ -97,7 +97,8 @@
       event.preventDefault(); // 不要觸發a tag href
 
       history.pushState(null,null,`?page=${p}`);
-
+      // pushstate時主動呼叫 renderPage
+      renderPage(`?page=${p}`);
       console.log({p})
     }
     function renderPage(qs){
@@ -120,6 +121,10 @@
       .catch((ex) => console.log(ex));
     }
     renderPage(location.search);
+
+    window.addEventListener("popstate",event=>{
+      renderPage(location.search)
+    })
   </script>
 </body>
 
