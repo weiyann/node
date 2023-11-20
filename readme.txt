@@ -20,8 +20,10 @@ req.session  # session 物件
 ========================
 RESTful API
 ------------------------
-GET:    read
-POST:   create
-PUT:    update
-DELETE: delete
+GET:    /products       read, 讀取列表
+GET:    /products/12    read, 讀取單筆
+
+POST:   /products       create, 新增資料
+PUT:    /products/12    update, 修改資料
+DELETE: /products/12    delete, 刪除資料
 ========================
