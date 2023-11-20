@@ -71,5 +71,9 @@ router.get('/add', async (req, res) => {
   res.locals.pageName='ab-add'
   res.render('address-book/add')
 })
+router.post('/add', async (req, res) => {
+  
+  res.json(req.body)
+})
 
 export default router;

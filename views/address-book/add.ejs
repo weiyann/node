@@ -46,6 +46,17 @@
         function sendForm(e) {
           e.preventDefault();
           // TODO: 資料檢查
+
+          const fd = new FormData(document.form1)
+
+          fetch('/address-book/add',{
+            method:"POST",
+            body:fd,
+          }).then((r)=>r.json())
+          .then((data)=>{
+            console.log(data);
+          })
+          .catch((ex)=>console.log(ex))
         }
       </script>
       <%- include('../parts/html-foot') %>
