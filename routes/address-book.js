@@ -72,8 +72,11 @@ router.get('/add', async (req, res) => {
   res.locals.pageName='ab-add'
   res.render('address-book/add')
 })
-
-router.post('/add', upload.none(),async (req, res) => {
+// router.post('/add', upload.none(),async (req, res) => {
+//   // 用upload.none() 處理表單數據
+//     res.json(req.body)
+//   })
+router.post('/add',async (req, res) => {
 // 用upload.none() 處理表單數據
   res.json(req.body)
 })
