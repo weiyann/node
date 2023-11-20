@@ -34,7 +34,7 @@ app.use(
 // 自訂頂層 middleware // 放後面
 app.use((req, res, next) => {
   res.locals.title = "Yann 的網站"; // 將title設定為樣版屬性
-
+  res.locals.pageName='';
   // 把function利用 middleware 掛在template上
   res.locals.toDateString = (d)=> dayjs(d).format("YYYY-MM-DD")
   res.locals.toDateTimeString = (d)=> dayjs(d).format("YYYY-MM-DD HH:mm:ss")
@@ -51,6 +51,7 @@ app.get('/', (req, res) => {
 
 app.get('/json-sales', (req, res) => {
   res.locals.title = "JSON資料 | " + res.locals.title;
+  res.locals.pageName='json-sales'
   res.render('json-sales', { sales });
 });
 

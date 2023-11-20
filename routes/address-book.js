@@ -37,6 +37,7 @@ const getListData = async (req) => {
       output.redirect = `?page=${totalPages}`;
       output.info = `頁碼值大於總頁數`;
       // 展開運算符 { ...output } 的作用是創建一個新的物件，將 output 物件中的所有屬性複製到這個新的物件中。同時，你可以在展開的同時添加其他屬性
+      // 將 totalRows 和totalPages 最新的值放在output中
       return { ...output, totalRows, totalPages };
     }
 
@@ -53,6 +54,7 @@ const getListData = async (req) => {
 
 // 網頁呈現資料
 router.get('/', async (req, res) => {
+  res.locals.pageName='ab-list'
   const output = await getListData(req);
   if (output.redirect) {
     // 如果有重定向屬性，執行重定向
