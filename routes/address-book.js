@@ -56,7 +56,7 @@ const getListData = async (req) => {
 
 // 網頁呈現資料
 router.get('/', async (req, res) => {
-  res.locals.pageName='ab-list';
+  res.locals.pageName = 'ab-list';
   // 將 getListData 裡 output 的值返回給外面的 output
   const output = await getListData(req);
   if (output.redirect) {
@@ -72,16 +72,31 @@ router.get('/api', async (req, res) => {
   res.json(await getListData(req))
 })
 router.get('/add', async (req, res) => {
-  res.locals.pageName='ab-add'
+  res.locals.pageName = 'ab-add'
   res.render('address-book/add')
 })
-// router.post('/add', upload.none(),async (req, res) => {
-//   // 用upload.none() 處理表單數據
-//     res.json(req.body)
-//   })
-router.post('/add',async (req, res) => {
-// 用upload.none() 處理表單數據
-  res.json(req.body)
+router.post('/add', upload.none(), async (req, res) => {
+  // 用upload.none() 處理表單數據
+  const { name, email, mobile, birthday, address } = req.body;
+  const sql = "INSERT INTO `address_book`(`name`, `email`, `mobile`, `birthday`, `address`, `created_at`) VALUES (?,?,?,?,?,NOW())"
+
+  const [result] = await db.query(sql, [name, email, mobile, birthday, address]);
+  /*
+  {
+    "fieldCount": 0,
+    "affectedRows": 1,  # 影響的列數
+    "insertId": 1015,   # 取得的PK
+    "info": "",
+    "serverStatus": 2,
+    "warningStatus": 0,
+    "changedRows": 0    # 修正時真正有變動的資料筆數
+}
+  */
+
+  res.json(result);
 })
+// router.post('/add',async (req, res) => {
+//   res.json(req.body)
+// })
 
 export default router;

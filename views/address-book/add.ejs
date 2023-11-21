@@ -53,17 +53,17 @@
 
           fetch('/address-book/add',{
             method:"POST",
-            // body:fd, // 1. multipart/form-data, 後端需要middleware (upload.none())
+            body:fd, // 1. multipart/form-data, 後端需要middleware (upload.none())
 
             /*body:usp.toString(),// 2. application/x-www-form-urlencoded
             headers:{
               "Content-Type":"application/x-www-form-urlencoded",
             } */
 
-            body: JSON.stringify(dataObj), // 3. application/json
-            headers:{
-              "Content-Type":"application/json",
-            }
+            // body: JSON.stringify(dataObj), // 3. application/json
+            // headers:{
+            //   "Content-Type":"application/json",
+            // }
           }).then((r)=>r.json())
           .then((data)=>{
             console.log(data);
