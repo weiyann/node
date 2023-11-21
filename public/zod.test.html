@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script type="module">
+    import { z } from "https://cdn.jsdelivr.net/npm/zod@3.22.4/+esm";
+
+    const schema = z.string().min(5).max(7);
+
+    const r1 = schema.parse("abcde");
+    console.log({r1});
+    try{
+      const r2 = schema.parse("abc");
+    }catch(ex){
+      console.log(ex);
+      console.log(JSON.stringify(ex,null,4));
+      alert(ex.issues[0].message);
+    }
+   
+  </script>
+</body>
+
+</html>
