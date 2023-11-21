@@ -77,16 +77,34 @@ router.get('/add', async (req, res) => {
 })
 router.post('/add', upload.none(), async (req, res) => {
   // 用upload.none() 處理表單數據
-  /*
+  const output ={
+    success:false,
+    postData:req.body, // 除錯用
+  }
+  
   const { name, email, mobile, birthday, address } = req.body;
   const sql = "INSERT INTO `address_book`(`name`, `email`, `mobile`, `birthday`, `address`, `created_at`) VALUES (?,?,?,?,?,NOW())"
 
-  const [result] = await db.query(sql, [name, email, mobile, birthday, address]);
-  */
+  
+  try{
+    const [result] = await db.query(sql, [
+      name, 
+      email, 
+      mobile, 
+      birthday, 
+      address
+    ]);
+    output.result =result;
+    output.success=!!result.affectedRows;
+  }catch(ex){
+    output.exception=ex;
+  }
+  /*
   const sql = "INSERT INTO `address_book` SET ?";
   // INSERT INTO `address_book` SET `name`=`abc`
   req.body.created_at = new Date();
   const [result] = await db.query(sql, [req.body]);
+  */
   /*
   {
     "fieldCount": 0,    # 查詢的列數
@@ -99,10 +117,25 @@ router.post('/add', upload.none(), async (req, res) => {
 }
   */
 
-  res.json(result);
+  res.json(output);
 })
 // router.post('/add',async (req, res) => {
 //   res.json(req.body)
 // })
+router.delete('/:sid', async (req, res) => {
+  const output={
+    success:false,
+    result:null,
+  }
+  const sid = + req.params.sid;
+  if(!sid || sid<1){
+    return res.json(output);
+  }
 
+  const sql = `DELETE FROM address_book where sid=${sid}`;
+  const[result]=await db.query(sql);
+  output.result = result;
+  output.success = !! result.affectedRows;
+  res.json(output);
+})
 export default router;
