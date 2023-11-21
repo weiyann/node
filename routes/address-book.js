@@ -77,18 +77,24 @@ router.get('/add', async (req, res) => {
 })
 router.post('/add', upload.none(), async (req, res) => {
   // 用upload.none() 處理表單數據
+  /*
   const { name, email, mobile, birthday, address } = req.body;
   const sql = "INSERT INTO `address_book`(`name`, `email`, `mobile`, `birthday`, `address`, `created_at`) VALUES (?,?,?,?,?,NOW())"
 
   const [result] = await db.query(sql, [name, email, mobile, birthday, address]);
+  */
+  const sql = "INSERT INTO `address_book` SET ?";
+  // INSERT INTO `address_book` SET `name`=`abc`
+  req.body.created_at = new Date();
+  const [result] = await db.query(sql, [req.body]);
   /*
   {
-    "fieldCount": 0,
+    "fieldCount": 0,    # 查詢的列數
     "affectedRows": 1,  # 影響的列數
     "insertId": 1015,   # 取得的PK
-    "info": "",
-    "serverStatus": 2,
-    "warningStatus": 0,
+    "info": "",         # 附加的信息, 通常是空字串
+    "serverStatus": 2,  # 服務器的狀態碼，此處為2。這個屬性表示MySQL服務器的狀態。
+    "warningStatus": 0, # 警告的狀態碼，此處為0，表示沒有警告。
     "changedRows": 0    # 修正時真正有變動的資料筆數
 }
   */
