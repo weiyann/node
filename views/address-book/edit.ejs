@@ -8,6 +8,7 @@
             <div class="card-body">
               <h5 class="card-title">編輯資料</h5>
               <form name="form1" onsubmit="sendForm(event)">
+                <input type="hidden" name="sid" value="<%=sid%>">
                 <div class="mb-3">
                   <label for="name" class="form-label">name</label>
                   <input type="text" class="form-control" id="name" name="name" value="<%=name%>"/>
@@ -25,7 +26,7 @@
                 </div>
                 <div class="mb-3">
                   <label for="birthday" class="form-label">birthday</label>
-                  <input type="date" class="form-control" id="birthday" name="birthday" value="<%=birthday%>"/>
+                  <input type="date" class="form-control" id="birthday" name="birthday" value="<%=birthday2%>"/>
                   <div class="form-text"></div>
                 </div>
                 <div class="mb-3">
@@ -45,26 +46,19 @@
       <script>
         function sendForm(e) {
           e.preventDefault();
-          return;
+
           // TODO: 資料檢查
 
           const fd = new FormData(document.form1);
-          const usp = new URLSearchParams(fd);
           const dataObj = Object.fromEntries(fd);
 
-          fetch('/address-book/add',{
-            method:"POST",
-            body:fd, // 1. multipart/form-data, 後端需要middleware (upload.none())
-
-            /*body:usp.toString(),// 2. application/x-www-form-urlencoded
+          fetch('',{
+            method:"PUT",
+            body:JSON.stringify(dataObj),
             headers:{
-              "Content-Type":"application/x-www-form-urlencoded",
-            } */
+              'Content-Type':"application/json"
+            } 
 
-            // body: JSON.stringify(dataObj), // 3. application/json
-            // headers:{
-            //   "Content-Type":"application/json",
-            // }
           }).then((r)=>r.json())
           .then((data)=>{
             console.log(data);

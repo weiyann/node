@@ -1,6 +1,7 @@
 import express from "express";
 import db from './../utils/connect-mysql.js';
 import upload from "./../utils/upload-imgs.js";
+import dayjs from "dayjs";
 
 const router = express.Router();
 
@@ -135,9 +136,17 @@ router.get('/edit/:sid', async (req, res) => {
     // 如果沒資料就轉向
     return res.redirect(req.baseUrl);
   }
-  // 回傳第一筆資料
-  res.render("address-book/edit",rows[0]);
+  const row = rows[0];
+  row.birthday2=dayjs(row.birthday).format("YYYY-MM-DD")
+
+  res.render("address-book/edit",row);
 })
+router.put('/edit/:sid', async (req, res) => {
+
+  // TODO: 欄位資料檢查
+  res.json(req.body)
+})
+
 
 router.delete('/:sid', async (req, res) => {
   const output={
