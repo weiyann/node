@@ -109,13 +109,16 @@
           const sid = e.currentTarget.getAttribute('data-sid');
           // TODO: 詢問用戶是否確定要刪除
           fetch(`/address-book/${sid}`, {
-            method: 'DELETE'
-          }).then(r => r.json()).then(data => {
-            console.log(data)
-            if (data.success) {
-              location.reload();
-            }
-          }).catch(ex => console.log(ex))
+            method: "DELETE",
+          })
+            .then((r) => r.json())
+            .then((data) => {
+              console.log(data);
+              if (data.success) {
+                location.reload();
+              }
+            })
+            .catch((ex) => console.log(ex));
         };
 
 

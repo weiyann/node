@@ -84,7 +84,6 @@ router.post('/add', upload.none(), async (req, res) => {
   
   const { name, email, mobile, birthday, address } = req.body;
   const sql = "INSERT INTO `address_book`(`name`, `email`, `mobile`, `birthday`, `address`, `created_at`) VALUES (?,?,?,?,?,NOW())"
-
   
   try{
     const [result] = await db.query(sql, [
@@ -94,7 +93,9 @@ router.post('/add', upload.none(), async (req, res) => {
       birthday, 
       address
     ]);
+    // 定義一個 output 的屬性 result 把 SQL查詢的值給他
     output.result =result;
+    // 如果 affectedRows 是1就是true,0就是false
     output.success=!!result.affectedRows;
   }catch(ex){
     output.exception=ex;
@@ -135,7 +136,7 @@ router.delete('/:sid', async (req, res) => {
   const sql = `DELETE FROM address_book where sid=${sid}`;
   const[result]=await db.query(sql);
   output.result = result;
-  output.success = !! result.affectedRows;
+  output.success = !!result.affectedRows;
   res.json(output);
 })
 export default router;
