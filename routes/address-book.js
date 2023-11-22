@@ -6,6 +6,13 @@ import dayjs from "dayjs";
 const router = express.Router();
 
 router.use((req,res,next)=>{
+  const u = req.url.split("?")[0]; // 只要路徑
+  console.log({u});
+  if(req.method === "GET"&& u ==="/"){
+    // 如果請求是GET方法,路徑是 就通過
+    return next();
+  }
+
   if(!req.session.admin){
     return res.redirect("/login");
   }
@@ -72,8 +79,12 @@ router.get('/', async (req, res) => {
     // 如果有redirect屬性，執行轉向 // 加return結束，不用再執行下面的render
     return res.redirect(output.redirect);
   }
-  // 沒轉向就一般呈現list
-  res.render('address-book/list', output)
+  if(!req.session.admin){
+    res.render("address-book/list-no-admin",output);
+  }else{
+    res.render('address-book/list', output)
+  }
+  
 })
 
 // api 呈現資料
