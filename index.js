@@ -3,6 +3,7 @@ import express from "express";
 import session from "express-session";
 import cors from "cors";
 import dayjs from "dayjs";
+import mysql_session from "express-mysql-session";
 import moment from "moment-timezone";
 import sales from "./data/sales.json" assert { type: "json" }; // import json檔目前是實驗性質的功能
 //import multer from "multer";
@@ -23,11 +24,15 @@ app.set('view engine', 'ejs');
 app.use(cors()); // 放所有路由的前面
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+
+const MysqlStore = mysql_session(session);
+const sessionStore = new MysqlStore({},db);
 app.use(
   session({
     saveUninitialized: false, // 新用戶沒有使用到 session 物件時不會建立 session 和發送 cookie
     resave: false,  // 沒變更內容是否強制回存
     secret: 'feagfegwevgv213',
+    store:sessionStore,
     // cookie: {
     // maxAge: 1200_000, // 20分鐘，單位毫秒
     // },
