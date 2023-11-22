@@ -1,7 +1,7 @@
 <%- include('../parts/html-head') %>
 
-   <!-- Modal -->
-   <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -15,7 +15,8 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">繼續編輯</button>
-          <button type="button" class="btn btn-primary" onclick="history.back()">回到列表頁</button>
+          <button type="button" class="btn btn-primary"
+            onclick="document.referrer?location.href=document.referrer:history.back()">回到列表頁</button>
         </div>
       </div>
     </div>
@@ -33,28 +34,29 @@
                 <input type="hidden" name="sid" value="<%=sid%>">
                 <div class="mb-3">
                   <label for="name" class="form-label">name</label>
-                  <input type="text" class="form-control" id="name" name="name" value="<%=name%>"/>
+                  <input type="text" class="form-control" id="name" name="name" value="<%=name%>" />
                   <div class="form-text"></div>
                 </div>
                 <div class="mb-3">
                   <label for="email" class="form-label">email</label>
-                  <input type="text" class="form-control" id="email" name="email" value="<%=email%>"/>
+                  <input type="text" class="form-control" id="email" name="email" value="<%=email%>" />
                   <div class="form-text"></div>
                 </div>
                 <div class="mb-3">
                   <label for="mobile" class="form-label">mobile</label>
-                  <input type="text" class="form-control" id="mobile" name="mobile" value="<%=mobile%>"/>
+                  <input type="text" class="form-control" id="mobile" name="mobile" value="<%=mobile%>" />
                   <div class="form-text"></div>
                 </div>
                 <div class="mb-3">
                   <label for="birthday" class="form-label">birthday</label>
-                  <input type="date" class="form-control" id="birthday" name="birthday" value="<%=birthday2%>"/>
+                  <input type="date" class="form-control" id="birthday" name="birthday" value="<%=birthday2%>" />
                   <div class="form-text"></div>
                 </div>
                 <div class="mb-3">
                   <label for="address" class="form-label">address</label>
                   <!-- textarea中的空格和換行當成資料 -->
-                  <textarea name="address" id="address" name="address" class="form-control" cols="30" rows="3"><%=address%></textarea>
+                  <textarea name="address" id="address" name="address" class="form-control" cols="30"
+                    rows="3"><%=address%></textarea>
                   <div class="form-text"></div>
                 </div>
                 <button type="submit" class="btn btn-primary">修改</button>
@@ -75,30 +77,30 @@
           const fd = new FormData(document.form1);
           const dataObj = Object.fromEntries(fd);
 
-          fetch('',{
-            method:"PUT",
-            body:JSON.stringify(dataObj),
-            headers:{
-              'Content-Type':"application/json"
-            } 
-
-          }).then((r)=>r.json())
-          .then((data)=>{
-            console.log(data);
-            if(data.success){
-              alertBar.classList.remove("alert-danger");
-              alertBar.classList.add("alert-success");
-              alertBar.innerText = "修改成功";
-              myModal.show();
-            }else{
-              alertBar.classList.remove("alert-success");
-              alertBar.classList.add("alert-danger");
-              alertBar.innerText = "資料沒有修改";
-              myModal.show();
+          fetch('', {
+            method: "PUT",
+            body: JSON.stringify(dataObj),
+            headers: {
+              'Content-Type': "application/json"
             }
-            
-          })
-          .catch((ex)=>console.log(ex))
+
+          }).then((r) => r.json())
+            .then((data) => {
+              console.log(data);
+              if (data.success) {
+                alertBar.classList.remove("alert-danger");
+                alertBar.classList.add("alert-success");
+                alertBar.innerText = "修改成功";
+                myModal.show();
+              } else {
+                alertBar.classList.remove("alert-success");
+                alertBar.classList.add("alert-danger");
+                alertBar.innerText = "資料沒有修改";
+                myModal.show();
+              }
+
+            })
+            .catch((ex) => console.log(ex))
         }
         const exampleModal = document.querySelector("#exampleModal");
         const alertBar = exampleModal.querySelector('.alert');
