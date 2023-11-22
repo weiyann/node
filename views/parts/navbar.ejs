@@ -35,6 +35,24 @@
           </li>
 
         </ul>
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <% if(session.admin){ %>
+            <li class="nav-item">
+              <a class="nav-link"><%=session.admin.nickname%></a>
+            </li>
+            <li class="nav-item">
+              <a href="/logout" class="nav-link">登出</a>
+            </li>
+          <% }else{ %>
+            <li class="nav-item">
+              <a href="/login" class="nav-link">登入</a>
+            </li>
+            <li class="nav-item">
+              <a href="/register" class="nav-link">註冊</a>
+            </li>
+            <% }%>
+          
+        </ul>
 
       </div>
     </div>

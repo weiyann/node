@@ -47,7 +47,7 @@ app.use((req, res, next) => {
   res.locals.toDateString = (d)=> dayjs(d).format("YYYY-MM-DD")
   res.locals.toDateTimeString = (d)=> dayjs(d).format("YYYY-MM-DD HH:mm:ss")
   
-
+  res.locals.session = req.session; // 讓 template 可以取用 session
   next() //req,res 往下傳遞
 })
 
@@ -174,13 +174,14 @@ app.post("/login",async (req,res)=>{
     return res.json(output);
   }
   const row = rows[0];
+  // 比較用戶輸入的密碼和資料庫查詢的密碼
   const pass = await bcrypt.compare(req.body.password,row.password);
   if(!pass){
     // 密碼是錯的
     output.code=420;
     return res.json(output);
   }
-
+  // 資料正確
   output.code=200;
   output.success=true;
   // 設定session
@@ -192,7 +193,13 @@ app.post("/login",async (req,res)=>{
   output.member = req.session.admin;
   res.json(output)
 });
-app.get("/logout",async (req,res)=>{});
+app.get("/logout",async (req,res)=>{
+  // delete 刪除物件的屬性，把session的admin屬性刪掉
+  delete req.session.admin;
+
+  // 轉向首頁
+  res.redirect('/');
+});
 
 
 // app.get("/a.html", (req, res) => {
