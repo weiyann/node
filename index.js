@@ -148,6 +148,14 @@ app.get("/yahoo",async (req,res)=>{
   res.send(txt);
 
 })
+app.get("/login",async (req,res)=>{
+  res.render('login');
+});
+app.post("/login",async (req,res)=>{
+  res.json(req.body)
+});
+app.get("/logout",async (req,res)=>{});
+
 
 // app.get("/a.html", (req, res) => {
 //   res.send(`假的 a.html`);
