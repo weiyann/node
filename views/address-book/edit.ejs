@@ -1,4 +1,26 @@
 <%- include('../parts/html-head') %>
+
+   <!-- Modal -->
+   <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">資料修改結果</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="alert alert-success" role="alert">
+            資料編輯成功
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">繼續編輯</button>
+          <button type="button" class="btn btn-primary" onclick="history.back()">回到列表頁</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <%- include('../parts/navbar') %>
     <!-- <%- JSON.stringify(locals, null, 4) %> -->
     <div class="container">
@@ -31,6 +53,7 @@
                 </div>
                 <div class="mb-3">
                   <label for="address" class="form-label">address</label>
+                  <!-- textarea中的空格和換行當成資料 -->
                   <textarea name="address" id="address" name="address" class="form-control" cols="30" rows="3"><%=address%></textarea>
                   <div class="form-text"></div>
                 </div>
@@ -62,8 +85,26 @@
           }).then((r)=>r.json())
           .then((data)=>{
             console.log(data);
+            if(data.success){
+              alertBar.classList.remove("alert-danger");
+              alertBar.classList.add("alert-success");
+              alertBar.innerText = "修改成功";
+              myModal.show();
+            }else{
+              alertBar.classList.remove("alert-success");
+              alertBar.classList.add("alert-danger");
+              alertBar.innerText = "資料沒有修改";
+              myModal.show();
+            }
+            
           })
           .catch((ex)=>console.log(ex))
         }
+        const exampleModal = document.querySelector("#exampleModal");
+        const alertBar = exampleModal.querySelector('.alert');
+
+        const myModal = new bootstrap.Modal('#exampleModal', {
+          keyboard: false
+        })
       </script>
       <%- include('../parts/html-foot') %>
