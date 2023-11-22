@@ -6,34 +6,34 @@
         <div class="col-6">
           <div class="card">
             <div class="card-body">
-              <h5 class="card-title">新增資料</h5>
+              <h5 class="card-title">編輯資料</h5>
               <form name="form1" onsubmit="sendForm(event)">
                 <div class="mb-3">
                   <label for="name" class="form-label">name</label>
-                  <input type="text" class="form-control" id="name" name="name" />
+                  <input type="text" class="form-control" id="name" name="name" value="<%=name%>"/>
                   <div class="form-text"></div>
                 </div>
                 <div class="mb-3">
                   <label for="email" class="form-label">email</label>
-                  <input type="text" class="form-control" id="email" name="email" />
+                  <input type="text" class="form-control" id="email" name="email" value="<%=email%>"/>
                   <div class="form-text"></div>
                 </div>
                 <div class="mb-3">
                   <label for="mobile" class="form-label">mobile</label>
-                  <input type="text" class="form-control" id="mobile" name="mobile" />
+                  <input type="text" class="form-control" id="mobile" name="mobile" value="<%=mobile%>"/>
                   <div class="form-text"></div>
                 </div>
                 <div class="mb-3">
                   <label for="birthday" class="form-label">birthday</label>
-                  <input type="date" class="form-control" id="birthday" name="birthday" />
+                  <input type="date" class="form-control" id="birthday" name="birthday" value="<%=birthday%>"/>
                   <div class="form-text"></div>
                 </div>
                 <div class="mb-3">
                   <label for="address" class="form-label">address</label>
-                  <textarea name="address" id="address" name="address" class="form-control" cols="30" rows="3"></textarea>
+                  <textarea name="address" id="address" name="address" class="form-control" cols="30" rows="3"><%=address%></textarea>
                   <div class="form-text"></div>
                 </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="submit" class="btn btn-primary">修改</button>
               </form>
             </div>
           </div>
@@ -45,6 +45,7 @@
       <script>
         function sendForm(e) {
           e.preventDefault();
+          return;
           // TODO: 資料檢查
 
           const fd = new FormData(document.form1);

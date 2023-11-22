@@ -57,6 +57,7 @@ const getListData = async (req) => {
 // 網頁呈現資料
 router.get('/', async (req, res) => {
   res.locals.pageName = 'ab-list';
+  res.locals.title="列表 | "+res.locals.title;
   // 將 getListData 裡 output 的值返回給外面的 output
   const output = await getListData(req);
   if (output.redirect) {
@@ -73,6 +74,7 @@ router.get('/api', async (req, res) => {
 })
 router.get('/add', async (req, res) => {
   res.locals.pageName = 'ab-add'
+  res.locals.title="新增 | "+res.locals.title;
   res.render('address-book/add')
 })
 router.post('/add', upload.none(), async (req, res) => {
@@ -125,7 +127,7 @@ router.post('/add', upload.none(), async (req, res) => {
 // })
 router.get('/edit/:sid', async (req, res) => {
   const sid = +req.params.sid;
-
+  res.locals.title="編輯 | "+res.locals.title;
   const sql = `SELECT * FROM address_book where sid=?`;
   const[rows]=await db.query(sql,[sid]);
   // if(rows?.length) 如果rows有值就取它的屬性length
@@ -133,7 +135,8 @@ router.get('/edit/:sid', async (req, res) => {
     // 如果沒資料就轉向
     return res.redirect(req.baseUrl);
   }
-  res.json(rows[0]);
+  // 回傳第一筆資料
+  res.render("address-book/edit",rows[0]);
 })
 
 router.delete('/:sid', async (req, res) => {
