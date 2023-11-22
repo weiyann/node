@@ -147,6 +147,7 @@ router.put('/edit/:sid', async (req, res) => {
     postData:req.body,
     result:null,
   }
+  
   req.body.address=req.body.address.trim() // 去除頭尾空白
   const sql = `UPDATE address_book SET ? WHERE sid=?`;
   const [result] = await db.query(sql,[req.body,req.body.sid]);
