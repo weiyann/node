@@ -4,6 +4,7 @@ import session from "express-session";
 import cors from "cors";
 import dayjs from "dayjs";
 import mysql_session from "express-mysql-session";
+import bcrypt from "bcryptjs";
 import moment from "moment-timezone";
 import sales from "./data/sales.json" assert { type: "json" }; // import json檔目前是實驗性質的功能
 //import multer from "multer";
@@ -152,7 +153,44 @@ app.get("/login",async (req,res)=>{
   res.render('login');
 });
 app.post("/login",async (req,res)=>{
-  res.json(req.body)
+  const output = {
+    success:false,
+    code:0,
+    postData:req.body,
+  };
+  if(!req.body.email || !req.body.password){
+    // 資料不足
+    output.code=410;
+    return res.json(output);
+  }
+
+  // email 要是unique
+  const sql = "SELECT * FROM members where email=?";
+  const [rows] = await db.query(sql,[req.body.email]);
+
+  if(!rows.length){
+    // 帳號是錯的
+    output.code= 400;
+    return res.json(output);
+  }
+  const row = rows[0];
+  const pass = await bcrypt.compare(req.body.password,row.password);
+  if(!pass){
+    // 密碼是錯的
+    output.code=420;
+    return res.json(output);
+  }
+
+  output.code=200;
+  output.success=true;
+  // 設定session
+  req.session.admin={
+    id:row.id,
+    email:row.email,
+    nickname:row.nickname,
+  }
+  output.member = req.session.admin;
+  res.json(output)
 });
 app.get("/logout",async (req,res)=>{});
 

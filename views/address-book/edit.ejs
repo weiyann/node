@@ -77,6 +77,7 @@
           const fd = new FormData(document.form1);
           const dataObj = Object.fromEntries(fd);
 
+          // 路徑一樣fetch 可以用空字串
           fetch('', {
             method: "PUT",
             body: JSON.stringify(dataObj),
