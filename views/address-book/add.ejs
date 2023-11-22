@@ -51,7 +51,7 @@
           const usp = new URLSearchParams(fd);
           const dataObj = Object.fromEntries(fd);
 
-          fetch('/address-book/add',{
+          fetch('',{
             method:"POST",
             body:fd, // 1. multipart/form-data, 後端需要middleware (upload.none())
 

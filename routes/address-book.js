@@ -142,9 +142,18 @@ router.get('/edit/:sid', async (req, res) => {
   res.render("address-book/edit",row);
 })
 router.put('/edit/:sid', async (req, res) => {
+  const output = {
+    success:false,
+    postData:req.body,
+    result:null,
+  }
 
-  // TODO: 欄位資料檢查
-  res.json(req.body)
+  const sql = `UPDATE address_book SET ? WHERE sid=?`;
+  const [result] = await db.query(sql,[req.body,req.body.sid]);
+  output.result=result;
+  output.success=!!result.changedRows;
+
+  res.json(output)
 })
 
 
