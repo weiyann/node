@@ -5,6 +5,13 @@ import dayjs from "dayjs";
 
 const router = express.Router();
 
+router.use((req,res,next)=>{
+  if(!req.session.admin){
+    return res.redirect("/login");
+  }
+  next();
+})
+
 // 定義獲得資料列表的函數
 const getListData = async (req) => {
   const perPage = 20; // 每頁幾筆
@@ -147,7 +154,7 @@ router.put('/edit/:sid', async (req, res) => {
     postData:req.body,
     result:null,
   }
-  
+
   req.body.address=req.body.address.trim() // 去除頭尾空白
   const sql = `UPDATE address_book SET ? WHERE sid=?`;
   const [result] = await db.query(sql,[req.body,req.body.sid]);
