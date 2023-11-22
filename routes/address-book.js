@@ -123,6 +123,19 @@ router.post('/add', upload.none(), async (req, res) => {
 // router.post('/add',async (req, res) => {
 //   res.json(req.body)
 // })
+router.get('/edit/:sid', async (req, res) => {
+  const sid = +req.params.sid;
+
+  const sql = `SELECT * FROM address_book where sid=?`;
+  const[rows]=await db.query(sql,[sid]);
+  // if(rows?.length) 如果rows有值就取它的屬性length
+  if(!rows.length){
+    // 如果沒資料就轉向
+    return res.redirect(req.baseUrl);
+  }
+  res.json(rows[0]);
+})
+
 router.delete('/:sid', async (req, res) => {
   const output={
     success:false,
