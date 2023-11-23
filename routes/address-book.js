@@ -46,7 +46,7 @@ const getListData = async (req) => {
 
   let where = `WHERE 1 `; // 1後面要有空白 // 開頭
   if(keyword){
-    where+=`AND\`name\`LIKE${keyword_}`
+    where+=`AND(\`name\`LIKE${keyword_} OR \`mobile\`LIKE${keyword_})`;
   }
   if(startDate){
     where += `AND birthday >= '${startDate}'`
