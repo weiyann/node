@@ -26,6 +26,7 @@ const getListData = async (req) => {
   let keyword = req.query.keyword?req.query.keyword.trim():'';
   let keyword_=db.escape(`%${keyword}%`); // 跳脫
 
+  // 起始的日期
   let startDate = req.query.startDate?req.query.startDate.trim():'';
   const startDateD = dayjs(startDate);
   if(startDateD.isValid()){//如果是合法的
@@ -34,12 +35,24 @@ const getListData = async (req) => {
     startDate='';
   }
 
+  // 結束的日期
+  let endDate = req.query.endDate?req.query.endDate.trim():'';
+  const endDateD = dayjs(endDate);
+  if(endDateD.isValid()){//如果是合法的
+    endDate = endDateD.format("YYYY-MM-DD");
+  }else{
+    endDate='';
+  }
+
   let where = `WHERE 1 `; // 1後面要有空白 // 開頭
   if(keyword){
     where+=`AND\`name\`LIKE${keyword_}`
   }
   if(startDate){
     where += `AND birthday >= '${startDate}'`
+  }
+  if(endDate){
+    where += `AND birthday <= '${endDate}'`
   }
 
   let totalRows = 0;
