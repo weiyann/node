@@ -26,9 +26,20 @@ const getListData = async (req) => {
   let keyword = req.query.keyword?req.query.keyword.trim():'';
   let keyword_=db.escape(`%${keyword}%`); // 跳脫
 
+  let startDate = req.query.startDate?req.query.startDate.trim():'';
+  const startDateD = dayjs(startDate);
+  if(startDateD.isValid()){//如果是合法的
+    startDate = startDateD.format("YYYY-MM-DD");
+  }else{
+    startDate='';
+  }
+
   let where = `WHERE 1 `; // 1後面要有空白 // 開頭
   if(keyword){
     where+=`AND\`name\`LIKE${keyword_}`
+  }
+  if(startDate){
+    where += `AND birthday >= '${startDate}'`
   }
 
   let totalRows = 0;
