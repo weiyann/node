@@ -22,10 +22,12 @@
     </div>
     <div class="container">
       <div class="row">
-        <div class="col-6"></div>
-        <div class="col-6">
+
+        <div class="col">
           <form class="d-flex" role="search">
             <input class="form-control me-2" name="keyword" type="search" value="<%= qs.keyword ?? '' %>" placeholder="Search" aria-label="Search">
+            <input type="date" name="startDate" class="form-control me-2" value="<%= qs.startDate%>">
+            <input type="date" name="endDate" class="form-control me-2" value="<%= qs.endDate%>">
             <button class="btn btn-outline-success" type="submit">Search</button>
           </form>
         </div>

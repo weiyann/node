@@ -48,6 +48,7 @@ const getListData = async (req) => {
 
   let where = `WHERE 1 `; // 1後面要有空白 // 開頭
   if (keyword) {
+    // 如果有提供關鍵字，將其加入 qs 物件中，以便後續在模板中使用
     qs.keyword=keyword;
     where += `AND(\`name\`LIKE${keyword_} OR \`mobile\`LIKE${keyword_})`;
   }
