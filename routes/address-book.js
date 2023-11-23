@@ -9,7 +9,7 @@ router.use((req,res,next)=>{
   const u = req.url.split("?")[0]; // 只要路徑
   console.log({u});
   if(req.method === "GET"&& u ==="/"){
-    // 如果請求是GET方法,路徑是 就通過
+    // 如果請求是GET方法,路徑是列表就通過
     return next();
   }
 
@@ -22,7 +22,15 @@ router.use((req,res,next)=>{
 // 定義獲得資料列表的函數
 const getListData = async (req) => {
   const perPage = 20; // 每頁幾筆
-  let page = +req.query.page || 1;
+  let page = +req.query.page || 1; // 用戶決定要看第幾頁
+  let keyword = req.query.keyword?req.query.keyword.trim():'';
+  let keyword_=db.escape(`%${keyword}%`); // 跳脫
+
+  let where = `WHERE 1 `; // 1後面要有空白 // 開頭
+  if(keyword){
+    where+=`AND\`name\`LIKE${keyword_}`
+  }
+
   let totalRows = 0;
   let totalPages = 0;
   let rows = [];
@@ -46,7 +54,7 @@ const getListData = async (req) => {
     return output;
   }
 
-  const t_sql = "select count(1) totalRows from address_book";
+  const t_sql = `select count(1) totalRows from address_book ${where}`;
   [[{ totalRows }]] = await db.query(t_sql);
   totalPages = Math.ceil(totalRows / perPage);
   if (totalRows > 0) {
@@ -58,7 +66,7 @@ const getListData = async (req) => {
       return { ...output, totalRows, totalPages };
     }
 
-    const sql = `SELECT * FROM address_book order by sid desc
+    const sql = `SELECT * FROM address_book ${where} order by sid desc
       LIMIT ${(page - 1) * perPage},${perPage}`;
     [rows] = await db.query(sql);
     output = { ...output, success: true, rows, totalRows, totalPages }
@@ -79,6 +87,7 @@ router.get('/', async (req, res) => {
     // 如果有redirect屬性，執行轉向 // 加return結束，不用再執行下面的render
     return res.redirect(output.redirect);
   }
+  // 如果沒有admin就到閹割版列表，有就到一般列表
   if(!req.session.admin){
     res.render("address-book/list-no-admin",output);
   }else{
