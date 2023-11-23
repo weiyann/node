@@ -25,7 +25,7 @@
         <div class="col-6"></div>
         <div class="col-6">
           <form class="d-flex" role="search">
-            <input class="form-control me-2" name="keyword" type="search" placeholder="Search" aria-label="Search">
+            <input class="form-control me-2" name="keyword" type="search" value="<%= qs.keyword ?? '' %>" placeholder="Search" aria-label="Search">
             <button class="btn btn-outline-success" type="submit">Search</button>
           </form>
         </div>
@@ -45,7 +45,7 @@
                 </a>
               </li>
               <% for(let i=page-5;i<=page+5;i++) if(i>=1 && i<= totalPages) { %>
-                  <li class="page-item <%= i===page ? 'active' : '' %>"><a class="page-link" href="?page=<%=i%>">
+                  <li class="page-item <%= i===page ? 'active' : '' %>"><a class="page-link" href="?<%= new URLSearchParams({...qs,page:i}).toString() %>">
                       <%=i%>
                     </a></li>
                   <% } %>

@@ -26,6 +26,8 @@ const getListData = async (req) => {
   let keyword = (req.query.keyword && typeof req.query.keyword === 'string') ? req.query.keyword.trim() : '';
   let keyword_ = db.escape(`%${keyword}%`); // 跳脫
 
+  let qs ={}; // 用來把 query string 的設定傳給 template
+
   // 起始的日期
   let startDate = req.query.startDate ? req.query.startDate.trim() : '';
   const startDateD = dayjs(startDate);
@@ -46,12 +48,15 @@ const getListData = async (req) => {
 
   let where = `WHERE 1 `; // 1後面要有空白 // 開頭
   if (keyword) {
+    qs.keyword=keyword;
     where += `AND(\`name\`LIKE${keyword_} OR \`mobile\`LIKE${keyword_})`;
   }
   if (startDate) {
+    qs.startDate=startDate;
     where += `AND birthday >= '${startDate}'`
   }
   if (endDate) {
+    qs.endDate=endDate;
     where += `AND birthday <= '${endDate}'`
   }
 
@@ -66,7 +71,7 @@ const getListData = async (req) => {
     rows,
     totalRows,
     totalPages,
-
+    qs,
     redirect: "",
     info: "",
   }
