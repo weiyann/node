@@ -5,15 +5,15 @@ import dayjs from "dayjs";
 
 const router = express.Router();
 
-router.use((req,res,next)=>{
+router.use((req, res, next) => {
   const u = req.url.split("?")[0]; // 只要路徑
-  console.log({u});
-  if(req.method === "GET"&& u ==="/"){
+  console.log({ u });
+  if (req.method === "GET" && u === "/") {
     // 如果請求是GET方法,路徑是列表就通過
     return next();
   }
 
-  if(!req.session.admin){
+  if (!req.session.admin) {
     return res.redirect("/login");
   }
   next();
@@ -23,35 +23,35 @@ router.use((req,res,next)=>{
 const getListData = async (req) => {
   const perPage = 20; // 每頁幾筆
   let page = +req.query.page || 1; // 用戶決定要看第幾頁
-  let keyword = req.query.keyword?req.query.keyword.trim():'';
-  let keyword_=db.escape(`%${keyword}%`); // 跳脫
+  let keyword = (req.query.keyword && typeof req.query.keyword === 'string') ? req.query.keyword.trim() : '';
+  let keyword_ = db.escape(`%${keyword}%`); // 跳脫
 
   // 起始的日期
-  let startDate = req.query.startDate?req.query.startDate.trim():'';
+  let startDate = req.query.startDate ? req.query.startDate.trim() : '';
   const startDateD = dayjs(startDate);
-  if(startDateD.isValid()){//如果是合法的
+  if (startDateD.isValid()) {//如果是合法的
     startDate = startDateD.format("YYYY-MM-DD");
-  }else{
-    startDate='';
+  } else {
+    startDate = '';
   }
 
   // 結束的日期
-  let endDate = req.query.endDate?req.query.endDate.trim():'';
+  let endDate = req.query.endDate ? req.query.endDate.trim() : '';
   const endDateD = dayjs(endDate);
-  if(endDateD.isValid()){//如果是合法的
+  if (endDateD.isValid()) {//如果是合法的
     endDate = endDateD.format("YYYY-MM-DD");
-  }else{
-    endDate='';
+  } else {
+    endDate = '';
   }
 
   let where = `WHERE 1 `; // 1後面要有空白 // 開頭
-  if(keyword){
-    where+=`AND(\`name\`LIKE${keyword_} OR \`mobile\`LIKE${keyword_})`;
+  if (keyword) {
+    where += `AND(\`name\`LIKE${keyword_} OR \`mobile\`LIKE${keyword_})`;
   }
-  if(startDate){
+  if (startDate) {
     where += `AND birthday >= '${startDate}'`
   }
-  if(endDate){
+  if (endDate) {
     where += `AND birthday <= '${endDate}'`
   }
 
@@ -104,7 +104,7 @@ const getListData = async (req) => {
 // 網頁呈現資料
 router.get('/', async (req, res) => {
   res.locals.pageName = 'ab-list';
-  res.locals.title="列表 | "+res.locals.title;
+  res.locals.title = "列表 | " + res.locals.title;
   // 將 getListData 裡 output 的值返回給外面的 output
   const output = await getListData(req);
   if (output.redirect) {
@@ -112,12 +112,12 @@ router.get('/', async (req, res) => {
     return res.redirect(output.redirect);
   }
   // 如果沒有admin就到閹割版列表，有就到一般列表
-  if(!req.session.admin){
-    res.render("address-book/list-no-admin",output);
-  }else{
+  if (!req.session.admin) {
+    res.render("address-book/list-no-admin", output);
+  } else {
     res.render('address-book/list', output)
   }
-  
+
 })
 
 // api 呈現資料
@@ -126,33 +126,33 @@ router.get('/api', async (req, res) => {
 })
 router.get('/add', async (req, res) => {
   res.locals.pageName = 'ab-add'
-  res.locals.title="新增 | "+res.locals.title;
+  res.locals.title = "新增 | " + res.locals.title;
   res.render('address-book/add')
 })
 router.post('/add', upload.none(), async (req, res) => {
   // 用upload.none() 處理表單數據
-  const output ={
-    success:false,
-    postData:req.body, // 除錯用
+  const output = {
+    success: false,
+    postData: req.body, // 除錯用
   }
-  
+
   const { name, email, mobile, birthday, address } = req.body;
   const sql = "INSERT INTO `address_book`(`name`, `email`, `mobile`, `birthday`, `address`, `created_at`) VALUES (?,?,?,?,?,NOW())"
-  
-  try{
+
+  try {
     const [result] = await db.query(sql, [
-      name, 
-      email, 
-      mobile, 
-      birthday, 
+      name,
+      email,
+      mobile,
+      birthday,
       address
     ]);
     // 定義一個 output 的屬性 result 把 SQL查詢的值給他
-    output.result =result;
+    output.result = result;
     // 如果 affectedRows 是1就是true,0就是false
-    output.success=!!result.affectedRows;
-  }catch(ex){
-    output.exception=ex;
+    output.success = !!result.affectedRows;
+  } catch (ex) {
+    output.exception = ex;
   }
   /*
   const sql = "INSERT INTO `address_book` SET ?";
@@ -179,48 +179,48 @@ router.post('/add', upload.none(), async (req, res) => {
 // })
 router.get('/edit/:sid', async (req, res) => {
   const sid = +req.params.sid;
-  res.locals.title="編輯 | "+res.locals.title;
+  res.locals.title = "編輯 | " + res.locals.title;
   const sql = `SELECT * FROM address_book where sid=?`;
-  const[rows]=await db.query(sql,[sid]);
+  const [rows] = await db.query(sql, [sid]);
   // if(rows?.length) 如果rows有值就取它的屬性length
-  if(!rows.length){
+  if (!rows.length) {
     // 如果沒資料就轉向
     return res.redirect(req.baseUrl);
   }
   const row = rows[0];
-  row.birthday2=dayjs(row.birthday).format("YYYY-MM-DD")
+  row.birthday2 = dayjs(row.birthday).format("YYYY-MM-DD")
 
-  res.render("address-book/edit",row);
+  res.render("address-book/edit", row);
 })
 router.put('/edit/:sid', async (req, res) => {
   const output = {
-    success:false,
-    postData:req.body,
-    result:null,
+    success: false,
+    postData: req.body,
+    result: null,
   }
 
-  req.body.address=req.body.address.trim() // 去除頭尾空白
+  req.body.address = req.body.address.trim() // 去除頭尾空白
   const sql = `UPDATE address_book SET ? WHERE sid=?`;
-  const [result] = await db.query(sql,[req.body,req.body.sid]);
-  output.result=result;
-  output.success=!!result.changedRows; // changedRows 實際有變動的資料筆數
+  const [result] = await db.query(sql, [req.body, req.body.sid]);
+  output.result = result;
+  output.success = !!result.changedRows; // changedRows 實際有變動的資料筆數
 
   res.json(output)
 })
 
 
 router.delete('/:sid', async (req, res) => {
-  const output={
-    success:false,
-    result:null,
+  const output = {
+    success: false,
+    result: null,
   }
   const sid = + req.params.sid;
-  if(!sid || sid<1){
+  if (!sid || sid < 1) {
     return res.json(output);
   }
 
   const sql = `DELETE FROM address_book where sid=${sid}`;
-  const[result]=await db.query(sql);
+  const [result] = await db.query(sql);
   output.result = result;
   output.success = !!result.affectedRows;
   res.json(output);
