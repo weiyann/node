@@ -213,7 +213,7 @@ router.get("/api/edit/:sid", async (req, res) => {
     return res.json({ success: false });
   }
   const row = rows[0];
-  row.birthday2 = dayjs(row.birthday).format("YYYY-MM-DD");
+  row.birthday = dayjs(row.birthday).format("YYYY-MM-DD");
 
   res.json({ success: true, row });
 });

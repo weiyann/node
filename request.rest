@@ -14,3 +14,14 @@ POST http://localhost:3002/try-post
 Content-Type: application/json
 
 {"name":"YANN","age":26}
+
+### 測試 JWT 登入 - 確定是正確的
+POST http://localhost:3002/login-jwt
+Content-Type: application/json
+
+{"email": "ming@gg.com", "password": "123456"}
+### 測試 JWT 登入 - 確定是錯誤的
+POST http://localhost:3002/login-jwt
+Content-Type: application/json
+
+{"email": "ming@gg.com", "password": "1234567"}
