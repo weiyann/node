@@ -52,8 +52,13 @@ app.use((req, res, next) => {
 
   // 取得某一個 http header
   const auth = req.get("Authorization");
-  if (auth) {
-    console.log(auth);
+  if (auth && auth.indexOf("Bearer ") === 0) {
+    const token = auth.slice(7); // 去掉 "Bearer "
+    try {
+      const payload = jwt.verify(token, process.env.JWT_SECRET);
+      console.log({ payload });
+      res.locals.jwt = payload;
+    } catch (ex) {}
   }
 
   next(); //req,res 往下傳遞
