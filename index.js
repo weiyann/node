@@ -49,6 +49,13 @@ app.use((req, res, next) => {
   res.locals.toDateTimeString = (d) => dayjs(d).format("YYYY-MM-DD HH:mm:ss");
 
   res.locals.session = req.session; // 讓 template 可以取用 session
+
+  // 取得某一個 http header
+  const auth = req.get("Authorization");
+  if (auth) {
+    console.log(auth);
+  }
+
   next(); //req,res 往下傳遞
 });
 
