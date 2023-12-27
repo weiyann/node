@@ -130,11 +130,12 @@ router.get("/", async (req, res) => {
 
 // api 呈現資料
 router.get("/api", async (req, res) => {
-  if (res.locals.jwt?.id) {
-    return res.json(await getListData(req));
-  } else {
-    return res.json({ success: false, error: "沒有授權, 不能取得資料" });
-  }
+  // if (res.locals.jwt?.id) {
+  //   return res.json(await getListData(req));
+  // } else {
+  //   return res.json({ success: false, error: "沒有授權, 不能取得資料" });
+  // }
+  return res.json(await getListData(req));
 });
 router.get("/add", async (req, res) => {
   res.locals.pageName = "ab-add";
