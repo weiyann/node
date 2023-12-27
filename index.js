@@ -56,9 +56,11 @@ app.use((req, res, next) => {
     const token = auth.slice(7); // 去掉 "Bearer "
     try {
       const payload = jwt.verify(token, process.env.JWT_SECRET);
-      console.log({ payload });
+      //console.log({ payload });
       res.locals.jwt = payload;
     } catch (ex) {}
+    // 測試用
+    // res.locals.jwt = { id: 15, email: "shin@ttt.com" };
   }
 
   next(); //req,res 往下傳遞
