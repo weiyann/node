@@ -273,6 +273,31 @@ app.post("/login-jwt", async (req, res) => {
 //   res.send(`假的 a.html`);
 // });
 
+// 取得會員自己的資料
+app.get("/profile", async (req, res) => {
+  // res.locals.jwt: {id, email}
+  const output = {
+    success: false,
+    error: "",
+    data: {},
+  };
+  if (!res.locals.jwt?.id) {
+    output.error = "沒有權限";
+    return res.json(output);
+  }
+  const [rows] = await db.query(
+    "SELECT `id`, `email`, `mobile`, `birthday`, `nickname` FROM `members` WHERE id=?",
+    [res.locals.jwt.id]
+  );
+  if (!rows.length) {
+    output.error = "沒有這個會員";
+    return res.json(output);
+  }
+  output.success = true;
+  output.data = rows[0];
+  res.json(output);
+});
+
 // 設定靜態內容的資料夾 // public裡面的內容相當於在根目錄
 app.use(express.static("public")); // app.use("/",express.static("public"));
 // 靜態內容的資料夾對應到 /bootstrap底下
